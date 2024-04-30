@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { useTranslation } from "./i18n";
+import { useTranslation } from "@/app/i18n";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Polaris",
-  description: "May the stars guide you"
+  title: "Polaris"
 };
 
 export default async function RootLayout({
