@@ -1,5 +1,7 @@
 {
   "title": "建立帳號",
   "description": "請在下方輸入你的電子郵件與密碼以建立帳號",
-  "buttonText": "建立帳號"
+  "buttonText": "建立帳號",
+  "otherPageDescription": "已有帳號？",
+  "otherPageLinkText": "登入"
 }

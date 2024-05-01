@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,8 +18,10 @@ import { Label } from "@/components/ui/label";
 import { useTranslation } from "@/app/i18n/client";
 
 export function Form({
+  children,
   params: { title, description, buttonText }
 }: {
+  children: React.ReactNode;
   params: {
     title: string;
     description: string;
@@ -57,6 +59,7 @@ export function Form({
           <Label htmlFor="password">{t("password")}</Label>
           <Input id="password" type="password" disabled={isLoading} />
         </div>
+        {children}
       </CardContent>
       <CardFooter>
         <Button className="w-full" disabled={isLoading} onClick={handleClick}>

@@ -1,5 +1,7 @@
 {
   "title": "Create an account",
   "description": "Enter your email and password below to create your account",
-  "buttonText": "Create account"
+  "buttonText": "Create account",
+  "otherPageDescription": "Already have an account?",
+  "otherPageLinkText": "Log in"
 }
