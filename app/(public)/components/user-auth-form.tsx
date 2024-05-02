@@ -110,20 +110,6 @@ export function UserAuthForm({
                 </FormItem>
               )}
             />
-
-            {/* <div className="grid gap-2">
-              <Label htmlFor="email">{t("email")}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                disabled={isLoading}
-              />
-            </div> */}
-            {/* <div className="grid gap-2">
-              <Label htmlFor="password">{t("password")}</Label>
-              <Input id="password" type="password" disabled={isLoading} />
-            </div> */}
             {children}
           </CardContent>
           <CardFooter>

@@ -1,0 +1,39 @@
+name: polaris
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ddO6UritpS
+      - POSTGRES_DB=polaris
+      - PGDATA=/var/lib/postgresql/data/pgdata/
+    volumes:
+      - ./volumes/:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-db-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@polaris.com"
+      PGADMIN_DEFAULT_PASSWORD: "Pi3wEYoqV1"
+    ports:
+      - 16543:80
+    volumes:
+      - ./postgresql/servers.json:/pgadmin4/servers.json
+    networks:
+      - postgres-db-network
+
+# volumes:
+#   postgres-db-volume:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: ./volumes/pgdata/
+
+networks:
+  postgres-db-network:
+    driver: bridge
