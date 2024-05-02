@@ -14,6 +14,9 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { getOptions, languages, cookieName } from "./settings";
 
+// Import your language translation files
+import zhTwTranslation from "zod-i18n-map/locales/zh-TW/zod.json";
+
 const runsOnServerSide = typeof window === "undefined";
 
 // on client side the normal singleton is ok
@@ -21,10 +24,9 @@ i18next
   .use(initReactI18next)
   .use(LanguageDetector)
   .use(
-    resourcesToBackend(
-      (language: string, namespace: string) =>
-        import(`./locales/${language}/${namespace}.json`)
-    )
+    resourcesToBackend((language: string, namespace: string) => {
+      return import(`./locales/${language}/${namespace}.json`);
+    })
   )
 
   .init({
@@ -33,8 +35,14 @@ i18next
     detection: {
       order: ["htmlTag", "cookie", "navigator"]
     },
-    preload: runsOnServerSide ? languages : []
+    preload: runsOnServerSide ? languages : [],
+    partialBundledLanguages: true,
+    resources: {
+      "zh-TW": { zod: zhTwTranslation }
+    }
   });
+// add zod i18n files after init
+i18next.addResourceBundle("zh-TW", "zod", zhTwTranslation);
 
 export function useTranslation<
   Ns extends FlatNamespace,

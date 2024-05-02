@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import { useTranslation } from "@/app/i18n";
 
-const Form = dynamic(
-  () => import("../components/form").then((mod) => mod.Form),
+const UserAuthForm = dynamic(
+  () => import("../components/user-auth-form").then((mod) => mod.UserAuthForm),
   {
     ssr: false
   }
@@ -15,7 +15,7 @@ export default async function Page() {
 
   return (
     <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
-      <Form
+      <UserAuthForm
         params={{
           title: t("title"),
           description: t("description"),
@@ -31,7 +31,7 @@ export default async function Page() {
             {t("otherPageLinkText")}
           </Link>
         </p>
-      </Form>
+      </UserAuthForm>
     </div>
   );
 }
