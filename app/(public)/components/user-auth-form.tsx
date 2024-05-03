@@ -33,7 +33,7 @@ const formSchema = z.object({
   password: z.string().min(6).max(16)
 });
 
-export function UserAuthForm({
+export default function UserAuthForm({
   children,
   params: { title, description, buttonText }
 }: {

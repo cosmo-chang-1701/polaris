@@ -3,12 +3,9 @@ import Link from "next/link";
 
 import { useTranslation } from "@/app/i18n";
 
-const UserAuthForm = dynamic(
-  () => import("../components/user-auth-form").then((mod) => mod.UserAuthForm),
-  {
-    ssr: false
-  }
-);
+const UserAuthForm = dynamic(() => import("../components/user-auth-form"), {
+  ssr: false
+});
 
 export default async function Page() {
   const { t } = await useTranslation("login");
