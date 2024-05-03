@@ -81,7 +81,6 @@ export default function UserAuthForm({
                   <FormLabel>{t("email")}</FormLabel>
                   <FormControl>
                     <Input
-                      id="email"
                       type="email"
                       placeholder="m@example.com"
                       disabled={isLoading}
@@ -99,12 +98,7 @@ export default function UserAuthForm({
                 <FormItem>
                   <FormLabel>{t("password")}</FormLabel>
                   <FormControl>
-                    <Input
-                      id="password"
-                      type="password"
-                      disabled={isLoading}
-                      {...field}
-                    />
+                    <Input type="password" disabled={isLoading} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
