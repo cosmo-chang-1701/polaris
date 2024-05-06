@@ -1,11 +1,11 @@
 {
   "Servers": {
     "1": {
-      "Name": "platform",
+      "Name": "polaris",
       "Group": "Servers",
       "Host": "postgres",
       "Port": 5432,
-      "MaintenanceDB": "postgres",
+      "MaintenanceDB": "platform",
       "Username": "postgres",
       "PassFile": "/pgpass",
       "SSLMode": "prefer"

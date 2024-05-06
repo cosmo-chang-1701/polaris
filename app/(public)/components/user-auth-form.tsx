@@ -1,10 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "@/lib/zod-i18n";
 
 import React, { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,15 +23,18 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form";
-import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
-
 import { useTranslation } from "@/app/i18n/client";
+
+import { authenticate } from "@/actions/auth";
+import { useFormAction } from "@/hooks/useFormActions";
 
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6).max(16)
 });
+
+export type UseFormActionFormSchema = z.infer<typeof formSchema>;
 
 export default function UserAuthForm({
   children,
@@ -45,8 +48,11 @@ export default function UserAuthForm({
   };
 }) {
   const { t } = useTranslation("user-auth-form");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+  const form = useFormAction<UseFormActionFormSchema>({
+    schema: formSchema,
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -54,20 +60,18 @@ export default function UserAuthForm({
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
+  const handleSubmit = async (formData: UseFormActionFormSchema) => {
+    const validateError = await authenticate(formData);
+    setErrorMessage(validateError);
+  };
 
   return (
     <Card className="w-[400px]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          className="space-y-8"
+          action={() => form.handleAction(handleSubmit)}
+        >
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">{title}</CardTitle>
             <CardDescription>{description}</CardDescription>
@@ -83,7 +87,6 @@ export default function UserAuthForm({
                     <Input
                       type="email"
                       placeholder="m@example.com"
-                      disabled={isLoading}
                       {...field}
                     />
                   </FormControl>
@@ -98,7 +101,7 @@ export default function UserAuthForm({
                 <FormItem>
                   <FormLabel>{t("password")}</FormLabel>
                   <FormControl>
-                    <Input type="password" disabled={isLoading} {...field} />
+                    <Input type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,15 +110,20 @@ export default function UserAuthForm({
             {children}
           </CardContent>
           <CardFooter>
-            <Button className="w-full" disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              {buttonText}
-            </Button>
+            <AuthButton text={buttonText} />
           </CardFooter>
         </form>
       </Form>
     </Card>
+  );
+}
+
+function AuthButton({ text }: { text: string }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button className="w-full" aria-disabled={pending}>
+      {text}
+    </Button>
   );
 }

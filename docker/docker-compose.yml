@@ -5,7 +5,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=ddO6UritpS
-      - POSTGRES_DB=polaris
+      - POSTGRES_DB=platform
       - PGDATA=/var/lib/postgresql/data/pgdata/
     volumes:
       - ./volumes/:/var/lib/postgresql/data
@@ -25,14 +25,6 @@ services:
       - ./postgresql/servers.json:/pgadmin4/servers.json
     networks:
       - postgres-db-network
-
-# volumes:
-#   postgres-db-volume:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: ./volumes/pgdata/
 
 networks:
   postgres-db-network:
