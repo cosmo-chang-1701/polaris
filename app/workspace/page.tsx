@@ -1,3 +1,3 @@
 export default async function Page() {
-  return <>Workspace page</>;
+  return <main>Workspace page</main>;
 }

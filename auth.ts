@@ -21,6 +21,27 @@ async function getUser(email: string): Promise<any> {
   }
 }
 
+async function setUser({
+  email,
+  password
+}: {
+  email: string;
+  password: string;
+}): Promise<any> {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prisma.users.create({
+      data: {
+        email: email,
+        password: hashedPassword
+      }
+    });
+  } catch (error) {
+    console.error("Failed to create user:", error);
+    throw new Error("Failed to create user.");
+  }
+}
+
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
@@ -34,7 +55,6 @@ export const { auth, signIn, signOut } = NextAuth({
           const { email, password } = parsedCredentials.data;
           const user = await getUser(email);
           if (!user) return null;
-          console.log(bcrypt);
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) return user;
@@ -45,3 +65,18 @@ export const { auth, signIn, signOut } = NextAuth({
     })
   ]
 });
+
+export const signUp = async (credentials: {
+  email: string;
+  password: string;
+}): Promise<any> => {
+  const parsedCredentials = z
+    .object({ email: z.string().email(), password: z.string().min(6) })
+    .safeParse(credentials);
+
+  if (parsedCredentials.success) {
+    return await setUser(parsedCredentials.data);
+  }
+
+  return null;
+};

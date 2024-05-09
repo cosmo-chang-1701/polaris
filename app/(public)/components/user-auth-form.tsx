@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "@/app/i18n/client";
 
-import { authenticate } from "@/actions/auth";
+import { authenticate, createUser } from "@/actions/auth";
 import { useFormAction } from "@/hooks/useFormActions";
 
 const formSchema = z.object({
@@ -38,10 +38,11 @@ export type UseFormActionFormSchema = z.infer<typeof formSchema>;
 
 export default function UserAuthForm({
   children,
-  params: { title, description, buttonText }
+  params: { action, title, description, buttonText }
 }: {
   children: React.ReactNode;
   params: {
+    action: string;
     title: string;
     description: string;
     buttonText: string;
@@ -61,7 +62,9 @@ export default function UserAuthForm({
   });
 
   const handleSubmit = async (formData: UseFormActionFormSchema) => {
-    const validateError = await authenticate(formData);
+    const validateError = Object.is(action, "login")
+      ? await authenticate(formData)
+      : await createUser(formData);
     setErrorMessage(validateError);
   };
 
@@ -86,7 +89,7 @@ export default function UserAuthForm({
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="m@example.com"
+                      placeholder="user@polaris.com"
                       {...field}
                     />
                   </FormControl>

@@ -14,6 +14,7 @@ export default async function Page() {
     <main className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
       <UserAuthForm
         params={{
+          action: "signup",
           title: t("title"),
           description: t("description"),
           buttonText: t("buttonText")
