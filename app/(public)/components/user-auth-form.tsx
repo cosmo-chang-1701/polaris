@@ -24,6 +24,8 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
+import { useToast } from "@/components/ui/use-toast";
 import { useTranslation } from "@/app/i18n/client";
 
 import { authenticate, createUser } from "@/actions/auth";
@@ -49,9 +51,8 @@ export default function UserAuthForm({
   };
 }) {
   const { t } = useTranslation("user-auth-form");
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  );
+  const { toast } = useToast();
+
   const form = useFormAction<UseFormActionFormSchema>({
     schema: formSchema,
     resolver: zodResolver(formSchema),
@@ -65,7 +66,9 @@ export default function UserAuthForm({
     const validateError = Object.is(action, "login")
       ? await authenticate(formData)
       : await createUser(formData);
-    setErrorMessage(validateError);
+    toast({
+      description: validateError
+    });
   };
 
   return (

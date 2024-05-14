@@ -1,4 +1,6 @@
 {
   "email": "Email",
-  "password": "Password"
+  "password": "Password",
+  "credentialsInvalid": "Email or password incorrect.",
+  "credentialsUnknownError": "something went wrong. please try again."
 }

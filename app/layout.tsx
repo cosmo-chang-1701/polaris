@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { useTranslation } from "@/app/i18n";
+import { getTranslation } from "@/app/i18n";
+
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,11 +18,14 @@ export default async function RootLayout({
 }>) {
   const {
     i18n: { language }
-  } = await useTranslation();
+  } = await getTranslation();
 
   return (
     <html lang={language}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main>{children}</main>
+        <Toaster />
+      </body>
     </html>
   );
 }

@@ -1,4 +1,6 @@
 {
   "email": "電子郵件",
-  "password": "密碼"
+  "password": "密碼",
+  "credentialsInvalid": "帳號或密碼錯誤。",
+  "credentialsUnknownError": "出了點問題。請再試一次。"
 }

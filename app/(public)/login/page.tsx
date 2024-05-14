@@ -1,17 +1,17 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
-import { useTranslation } from "@/app/i18n";
+import { getTranslation } from "@/app/i18n";
 
 const UserAuthForm = dynamic(() => import("../components/user-auth-form"), {
   ssr: false
 });
 
 export default async function Page() {
-  const { t } = await useTranslation("login");
+  const { t } = await getTranslation("login");
 
   return (
-    <main className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
+    <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
       <UserAuthForm
         params={{
           action: "login",
@@ -30,6 +30,6 @@ export default async function Page() {
           </Link>
         </p>
       </UserAuthForm>
-    </main>
+    </div>
   );
 }

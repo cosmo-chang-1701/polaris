@@ -3,19 +3,23 @@
 import { signIn, signUp } from "@/auth";
 import { AuthError } from "next-auth";
 
+import { getTranslation } from "@/app/i18n";
+
 export async function authenticate(formData: {
   email: string;
   password: string;
 }) {
+  const { t } = await getTranslation("user-auth-form");
+
   try {
     await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return "Invalid credentials.";
+          return t("credentialsInvalid");
         default:
-          return "Something went wrong.";
+          return t("credentialsUnknownError");
       }
     }
     throw error;
