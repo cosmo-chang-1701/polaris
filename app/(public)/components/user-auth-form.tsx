@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "@/lib/zod-i18n";
 
-import React, { useState } from "react";
+import React from "react";
 import { useFormStatus } from "react-dom";
 
 import { Button } from "@/components/ui/button";
@@ -66,9 +66,10 @@ export default function UserAuthForm({
     const validateError = Object.is(action, "login")
       ? await authenticate(formData)
       : await createUser(formData);
-    toast({
-      description: validateError
-    });
+    if (validateError)
+      toast({
+        description: validateError
+      });
   };
 
   return (

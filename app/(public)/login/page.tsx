@@ -11,7 +11,7 @@ export default async function Page() {
   const { t } = await getTranslation("login");
 
   return (
-    <div className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
+    <main className="container relative h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
       <UserAuthForm
         params={{
           action: "login",
@@ -30,6 +30,6 @@ export default async function Page() {
           </Link>
         </p>
       </UserAuthForm>
-    </div>
+    </main>
   );
 }
