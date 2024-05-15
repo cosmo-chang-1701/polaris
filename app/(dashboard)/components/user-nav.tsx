@@ -55,7 +55,7 @@ async function SignOutButton() {
       className="w-full"
       action={async () => {
         "use server";
-        await signOut();
+        await signOut({ redirectTo: "/login" });
       }}
     >
       <button type="submit" className="w-full text-left">

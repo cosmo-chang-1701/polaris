@@ -30,8 +30,9 @@ async function setUser({
 }): Promise<any> {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.users.create({
+    await prisma.users.create({
       data: {
+        name: "user",
         email: email,
         password: hashedPassword
       }

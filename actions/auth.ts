@@ -12,7 +12,11 @@ export async function authenticate(formData: {
   const { t } = await getTranslation("user-auth-form");
 
   try {
-    await signIn("credentials", formData);
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirectTo: "/workspace"
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
