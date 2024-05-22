@@ -38,7 +38,7 @@ const formSchema = z.object({
 
 export type UseFormActionFormSchema = z.infer<typeof formSchema>;
 
-export default function UserAuthForm({
+const UserAuthForm = ({
   children,
   params: { action, title, description, buttonText }
 }: {
@@ -49,7 +49,7 @@ export default function UserAuthForm({
     description: string;
     buttonText: string;
   };
-}) {
+}) => {
   const { t } = useTranslation("user-auth-form");
   const { toast } = useToast();
 
@@ -123,7 +123,7 @@ export default function UserAuthForm({
       </Form>
     </Card>
   );
-}
+};
 
 function AuthButton({ text }: { text: string }) {
   const { pending } = useFormStatus();
@@ -134,3 +134,5 @@ function AuthButton({ text }: { text: string }) {
     </Button>
   );
 }
+
+export default React.memo(UserAuthForm);

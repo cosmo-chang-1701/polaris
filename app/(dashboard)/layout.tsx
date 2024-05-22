@@ -8,15 +8,15 @@ export default async function Layout({
 }>) {
   return (
     <>
-      <div className="border-b">
-        <div className="flex h-16 items-center pr-4">
-          <MainNav className="mx-6" />
-          <div className="ml-auto flex items-center space-x-4">
+      <header className="sticky top-0 z-50 w-full border-b">
+        <div className="container flex h-14 max-w-screen-2xl items-center bg-gray-100">
+          <MainNav />
+          <div className="flex flex-1 items-center justify-end space-x-2">
             <UserNav />
           </div>
         </div>
-      </div>
-      {children}
+      </header>
+      <main className="container py-4">{children}</main>
     </>
   );
 }

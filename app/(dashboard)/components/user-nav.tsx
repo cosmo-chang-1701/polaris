@@ -21,7 +21,7 @@ export async function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarFallback>
+            <AvatarFallback className="bg-blue-500">
               {session?.user?.name?.slice(0, 1).toUpperCase()}
             </AvatarFallback>
           </Avatar>
