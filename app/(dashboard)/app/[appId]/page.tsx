@@ -27,34 +27,37 @@ const Page: FC = () => {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="mr-4 w-1/2">
+    <div className="flex h-screen flex-col md:flex-row">
+      <div className="mr-4 md:w-1/2">
         <Textarea
-          className="h-2/3"
+          className="h-[400px]"
           placeholder={t("prefixPropmtPlaceholder")}
           onChange={(e) => handleEnterPrefixPrompt(e.target.value)}
         />
       </div>
-      <div className="relative h-4/5 w-1/2 rounded-lg border">
-        <div className="absolute bottom-5  w-full px-5">
-          <div className="flex items-center">
-            <Input
-              type="message"
-              placeholder={t("messageInputPlaceholder")}
-              onChange={(e) => handleInputPrompt(e.target.value)}
-              onKeyDown={(e) => {
-                if (Object.is(e.key, "Enter")) handleSendMessage();
-              }}
-            />
-            <SendHorizontal
-              className={cn([
-                "cursor-pointe absolute right-8 text-gray-400",
-                {
-                  "cursor-pointer text-black": inputPrompt.length > 0
-                }
-              ])}
-              onClick={handleSendMessage}
-            />
+      <div className="relative h-[700px] rounded-lg border md:w-1/2">
+        <div className="h-full">
+          <div className="h-[500px] overflow-y-auto"></div>
+          <div className="absolute bottom-5 w-full">
+            <div className="flex items-center px-5">
+              <Input
+                type="message"
+                placeholder={t("messageInputPlaceholder")}
+                onChange={(e) => handleInputPrompt(e.target.value)}
+                onKeyDown={(e) => {
+                  if (Object.is(e.key, "Enter")) handleSendMessage();
+                }}
+              />
+              <SendHorizontal
+                className={cn([
+                  "cursor-pointe absolute right-8 text-gray-400",
+                  {
+                    "cursor-pointer text-black": inputPrompt.length > 0
+                  }
+                ])}
+                onClick={handleSendMessage}
+              />
+            </div>
           </div>
         </div>
       </div>
