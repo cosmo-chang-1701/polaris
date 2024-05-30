@@ -30,7 +30,14 @@ const Page: FC = () => {
   if (responseSectionRef.current)
     scrollHeight = responseSectionRef.current.scrollHeight
   useEffect(() => {
-    if (bottomRef.current && scrollHeight > responseSectionHeight) {
+    let scrollTop = 0
+    if (responseSectionRef.current)
+      scrollTop = responseSectionRef.current.scrollTop
+    if (
+      bottomRef.current &&
+      scrollHeight > responseSectionHeight &&
+      scrollHeight - scrollTop <= responseSectionHeight + 200
+    ) {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [scrollHeight])
