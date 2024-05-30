@@ -1,24 +1,24 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { getTranslation } from "@/app/i18n";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { getTranslation } from '@/app/i18n'
 
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from '@/components/ui/toaster'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Polaris"
-};
+  title: 'Polaris'
+}
 
 export default async function RootLayout({
   children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   const {
     i18n: { language }
-  } = await getTranslation();
+  } = await getTranslation()
 
   return (
     <html lang={language}>
@@ -27,5 +27,5 @@ export default async function RootLayout({
         <Toaster />
       </body>
     </html>
-  );
+  )
 }

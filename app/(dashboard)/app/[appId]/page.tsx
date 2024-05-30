@@ -1,88 +1,88 @@
-"use client";
+'use client'
 
-import React, { FC, useState, useTransition, useEffect, useRef } from "react";
-import { SendHorizontal } from "lucide-react";
-import { cn, postAndStream } from "@/lib/utils";
+import React, { FC, useState, useTransition, useEffect, useRef } from 'react'
+import { SendHorizontal } from 'lucide-react'
+import { cn, postAndStream } from '@/lib/utils'
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
-import type { ToastProps } from "@/components/ui/toast";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { useToast } from '@/components/ui/use-toast'
+import type { ToastProps } from '@/components/ui/toast'
+import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input'
 
-import { useTranslation } from "@/app/i18n/client";
+import { useTranslation } from '@/app/i18n/client'
 
 const Page: FC = () => {
-  const { t } = useTranslation("app-detail");
-  const { t: errorMessageT } = useTranslation("error-message");
+  const { t } = useTranslation('app-detail')
+  const { t: errorMessageT } = useTranslation('error-message')
 
-  const { toast } = useToast();
-  const [prefixPropmt, setPrefixPrompt] = useState("");
-  const [inputPrompt, setInputPrompt] = useState("");
-  const [responseMessages, setResponseMessages] = useState<string[]>([""]);
-  const [isPending, startTransition] = useTransition();
+  const { toast } = useToast()
+  const [prefixPropmt, setPrefixPrompt] = useState('')
+  const [inputPrompt, setInputPrompt] = useState('')
+  const [responseMessages, setResponseMessages] = useState<string[]>([''])
+  const [isPending, startTransition] = useTransition()
 
-  const responseSectionRef = useRef<HTMLInputElement>(null);
-  const bottomRef = useRef<HTMLInputElement>(null);
+  const responseSectionRef = useRef<HTMLInputElement>(null)
+  const bottomRef = useRef<HTMLInputElement>(null)
 
-  let scrollHeight = 0;
-  const responseSectionHeight = 630;
+  let scrollHeight = 0
+  const responseSectionHeight = 630
   if (responseSectionRef.current)
-    scrollHeight = responseSectionRef.current.scrollHeight;
+    scrollHeight = responseSectionRef.current.scrollHeight
   useEffect(() => {
     if (bottomRef.current && scrollHeight > responseSectionHeight) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [scrollHeight]);
+  }, [scrollHeight])
 
   function handleEnterPrefixPrompt(value: string) {
-    setPrefixPrompt(value);
+    setPrefixPrompt(value)
   }
 
   function handleInputPrompt(value: string) {
-    setInputPrompt(value);
+    setInputPrompt(value)
   }
 
   async function handleSendMessage() {
-    setInputPrompt("");
+    setInputPrompt('')
     try {
       await postAndStream(
-        "http://localhost:11434/api/chat",
+        'http://localhost:11434/api/chat',
         {
-          model: "phi3",
+          model: 'phi3',
           stream: true,
           messages: [
             {
-              role: "system",
+              role: 'system',
               content: prefixPropmt
             },
             {
-              role: "user",
+              role: 'user',
               content: inputPrompt
             }
           ]
         },
         (chunk) => {
           if (chunk.done) {
-            responseMessages.push("");
+            responseMessages.push('')
           } else {
-            const index = responseMessages.length - 1;
+            const index = responseMessages.length - 1
             responseMessages[index] =
-              responseMessages[index] + chunk.message.content;
+              responseMessages[index] + chunk.message.content
           }
           startTransition(() => {
-            setResponseMessages(responseMessages);
-          });
+            setResponseMessages(responseMessages)
+          })
         }
-      );
+      )
     } catch (e) {
       const toastProps: ToastProps & { description?: React.ReactNode } = {
-        variant: "destructive",
-        title: errorMessageT("error"),
-        description: errorMessageT("unknownErrorOccurred")
-      };
-      if (e instanceof Error) toastProps.description = e.message;
-      toast(toastProps);
+        variant: 'destructive',
+        title: errorMessageT('error'),
+        description: errorMessageT('unknownErrorOccurred')
+      }
+      if (e instanceof Error) toastProps.description = e.message
+      toast(toastProps)
     }
   }
 
@@ -91,7 +91,7 @@ const Page: FC = () => {
       <div className="mr-4 md:w-1/2">
         <Textarea
           className="h-[400px]"
-          placeholder={t("prefixPropmtPlaceholder")}
+          placeholder={t('prefixPropmtPlaceholder')}
           onChange={(e) => handleEnterPrefixPrompt(e.target.value)}
         />
       </div>
@@ -103,7 +103,7 @@ const Page: FC = () => {
           >
             {responseMessages.map((message, index) => {
               if (message)
-                return <ResponseBlock key={index} message={message} />;
+                return <ResponseBlock key={index} message={message} />
             })}
             <div ref={bottomRef}></div>
           </div>
@@ -113,17 +113,17 @@ const Page: FC = () => {
             <Input
               type="message"
               value={inputPrompt}
-              placeholder={t("messageInputPlaceholder")}
+              placeholder={t('messageInputPlaceholder')}
               onChange={(e) => handleInputPrompt(e.target.value)}
               onKeyDown={(e) => {
-                if (Object.is(e.key, "Enter")) handleSendMessage();
+                if (Object.is(e.key, 'Enter')) handleSendMessage()
               }}
             />
             <SendHorizontal
               className={cn([
-                "cursor-pointe absolute right-8 text-gray-400",
+                'cursor-pointe absolute right-8 text-gray-400',
                 {
-                  "cursor-pointer text-black": inputPrompt.length > 0
+                  'cursor-pointer text-black': inputPrompt.length > 0
                 }
               ])}
               onClick={handleSendMessage}
@@ -132,8 +132,8 @@ const Page: FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 function ResponseBlock({ message }: { message: string }) {
   return (
@@ -148,7 +148,7 @@ function ResponseBlock({ message }: { message: string }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default React.memo(Page);
+export default React.memo(Page)

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 import {
   Card,
@@ -6,11 +6,11 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 
 export default async function Page() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 p-8">
+    <div className="grid gap-4 p-8 md:grid-cols-2 lg:grid-cols-4">
       <Link href="/app/1">
         <Card>
           <CardHeader>
@@ -25,5 +25,5 @@ export default async function Page() {
         </Card>
       </Link>
     </div>
-  );
+  )
 }

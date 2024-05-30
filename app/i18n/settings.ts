@@ -1,7 +1,7 @@
-export const fallbackLng = "en";
-export const languages = [fallbackLng, "zh-TW"];
-export const defaultNS = "translation";
-export const cookieName = "locale";
+export const fallbackLng = 'en'
+export const languages = [fallbackLng, 'zh-TW']
+export const defaultNS = 'translation'
+export const cookieName = 'locale'
 
 export function getOptions(
   lng = fallbackLng,
@@ -14,5 +14,5 @@ export function getOptions(
     fallbackNS: defaultNS,
     defaultNS,
     ns
-  };
+  }
 }

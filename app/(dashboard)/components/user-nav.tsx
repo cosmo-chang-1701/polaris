@@ -1,7 +1,7 @@
-import { auth, signOut } from "@/auth";
+import { auth, signOut } from '@/auth'
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +9,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 
-import { getTranslation } from "@/app/i18n";
+import { getTranslation } from '@/app/i18n'
 
 export async function UserNav() {
-  const session = await auth();
+  const session = await auth()
 
   return (
     <DropdownMenu>
@@ -44,23 +44,23 @@ export async function UserNav() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
 
 async function SignOutButton() {
-  const { t } = await getTranslation("user-nav");
+  const { t } = await getTranslation('user-nav')
 
   return (
     <form
       className="w-full"
       action={async () => {
-        "use server";
-        await signOut({ redirectTo: "/login" });
+        'use server'
+        await signOut({ redirectTo: '/login' })
       }}
     >
       <button type="submit" className="w-full text-left">
-        {t("signOut")}
+        {t('signOut')}
       </button>
     </form>
-  );
+  )
 }

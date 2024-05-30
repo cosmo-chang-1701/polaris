@@ -1,10 +1,10 @@
-import { MainNav } from "./components/main-nav";
-import { UserNav } from "./components/user-nav";
+import { MainNav } from './components/main-nav'
+import { UserNav } from './components/user-nav'
 
 export default async function Layout({
   children
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <>
@@ -18,5 +18,5 @@ export default async function Layout({
       </header>
       <main className="container py-4">{children}</main>
     </>
-  );
+  )
 }
