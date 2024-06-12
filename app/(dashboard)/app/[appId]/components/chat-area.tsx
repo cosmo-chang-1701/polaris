@@ -1,33 +1,37 @@
 'use client'
 
-import React, { FC, useEffect, useRef, useTransition, useState } from 'react'
-
-import { useProps } from '../provider'
+import React, { FC, useEffect, useRef, useState, useTransition } from 'react'
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import { useToast } from '@/components/ui/use-toast'
-import { Input } from '@/components/ui/input'
 
-import type { ToastProps } from '@/components/ui/toast'
-
-import { useTranslation } from '@/app/i18n/client'
-
-import { SendHorizontal } from 'lucide-react'
-import { cn, postAndStream } from '@/lib/utils'
+import PromptInput from './pompt-input'
 
 const ChatArea: FC = () => {
-  const { t } = useTranslation('chat-area')
-  const { t: errorMessageT } = useTranslation('error-message')
-  const { toast } = useToast()
-
-  const appProps = useProps()
-  const [inputPrompt, setInputPrompt] = useState('')
   const [responseMessages, setResponseMessages] = useState<string[]>([''])
   const [isPending, startTransition] = useTransition()
-
   const responseSectionRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLInputElement>(null)
 
+  const handleResponseMessage = (dataChunk: {
+    message: { content: string }
+    done: boolean
+  }) => {
+    startTransition(() => {
+      setResponseMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages]
+        if (dataChunk.done) {
+          updatedMessages.push('')
+        } else {
+          const index = updatedMessages.length - 1
+          updatedMessages[index] =
+            updatedMessages[index] + dataChunk.message.content
+        }
+        return updatedMessages
+      })
+    })
+  }
+
+  // Handle window scroll events
   let scrollHeight = 0
   const responseSectionHeight = 630
   if (responseSectionRef.current)
@@ -45,49 +49,6 @@ const ChatArea: FC = () => {
     }
   }, [scrollHeight])
 
-  async function handleSendMessage() {
-    setInputPrompt('')
-    try {
-      await postAndStream(
-        'http://localhost:11434/api/chat',
-        {
-          model: 'phi3',
-          stream: true,
-          messages: [
-            {
-              role: 'system',
-              content: appProps?.customInstructions
-            },
-            {
-              role: 'user',
-              content: inputPrompt
-            }
-          ]
-        },
-        (chunk) => {
-          if (chunk.done) {
-            responseMessages.push('')
-          } else {
-            const index = responseMessages.length - 1
-            responseMessages[index] =
-              responseMessages[index] + chunk.message.content
-          }
-          startTransition(() => {
-            setResponseMessages(responseMessages)
-          })
-        }
-      )
-    } catch (e) {
-      const toastProps: ToastProps & { description?: React.ReactNode } = {
-        variant: 'destructive',
-        title: errorMessageT('error'),
-        description: errorMessageT('unknownErrorOccurred')
-      }
-      if (e instanceof Error) toastProps.description = e.message
-      toast(toastProps)
-    }
-  }
-
   return (
     <>
       <div className="h-[630px]">
@@ -96,38 +57,19 @@ const ChatArea: FC = () => {
           className={`h-[${responseSectionHeight}px] overflow-y-auto px-5 py-4`}
         >
           {responseMessages.map((message, index) => {
-            if (message) return <ResponseBlock key={index} message={message} />
+            if (message) return <MessageBlock key={index} message={message} />
           })}
           <div ref={bottomRef}></div>
         </div>
       </div>
       <div className="h-[70px] w-full py-3">
-        <div className="relative flex items-center px-5">
-          <Input
-            type="message"
-            value={inputPrompt}
-            placeholder={t('messageInputPlaceholder')}
-            onChange={(e) => setInputPrompt(e.target.value)}
-            onKeyDown={(e) => {
-              if (Object.is(e.key, 'Enter')) handleSendMessage()
-            }}
-          />
-          <SendHorizontal
-            className={cn([
-              'cursor-pointe absolute right-8 text-gray-400',
-              {
-                'cursor-pointer text-black': inputPrompt.length > 0
-              }
-            ])}
-            onClick={handleSendMessage}
-          />
-        </div>
+        <PromptInput onResponse={handleResponseMessage} />
       </div>
     </>
   )
 }
 
-function ResponseBlock({ message }: { message: string }) {
+function MessageBlock({ message }: { message: string }) {
   return (
     <div className="mt-4">
       <div className="flex items-start space-x-2">

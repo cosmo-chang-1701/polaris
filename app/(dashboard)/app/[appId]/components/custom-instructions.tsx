@@ -27,7 +27,7 @@ const CustomInstructions: FC = () => {
       onChange={(e) => {
         setCustomInstructions(e.target.value)
         dispatch({
-          type: AppActionKind.addedCustomInstructions,
+          type: AppActionKind.SET_INSTRUCTIONS,
           payload: e.target.value
         })
       }}

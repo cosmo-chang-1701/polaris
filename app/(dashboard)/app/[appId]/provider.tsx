@@ -7,7 +7,7 @@ import {
 } from 'react'
 
 export enum AppActionKind {
-  addedCustomInstructions = 'SET_INSTRUCTIONS'
+  SET_INSTRUCTIONS = 'SET_INSTRUCTIONS'
 }
 
 interface PropsAction {
