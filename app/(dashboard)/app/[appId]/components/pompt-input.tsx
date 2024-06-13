@@ -25,10 +25,12 @@ const PromptInput: FC<OnResponseProps> = ({ onResponse }) => {
   const { t } = useTranslation('prompt-input')
   const { t: errorMessageT } = useTranslation('error-message')
 
+  // Retrieve app properties using a custom hook
   const appProps = useProps()
   const [inputPrompt, setInputPrompt] = useState('')
   const { toast } = useToast()
 
+  // Function to handle sending a message
   async function handleSendMessage() {
     setInputPrompt('')
     try {
@@ -53,12 +55,13 @@ const PromptInput: FC<OnResponseProps> = ({ onResponse }) => {
         }
       )
     } catch (e) {
+      // Handle errors by displaying a toast
       const toastProps: ToastProps & { description?: React.ReactNode } = {
         variant: 'destructive',
         title: errorMessageT('error'),
         description: errorMessageT('unknownErrorOccurred')
       }
-      if (e instanceof Error) toastProps.description = e.message
+      if (e instanceof Error) toastProps.description = e.message // Use specific error message if available
       toast(toastProps)
     }
   }

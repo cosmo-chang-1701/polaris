@@ -18,10 +18,12 @@ const ChatArea: FC = () => {
   }) => {
     startTransition(() => {
       setResponseMessages((prevMessages) => {
+        // If the message is complete, add a new entry
         const updatedMessages = [...prevMessages]
         if (dataChunk.done) {
           updatedMessages.push('')
         } else {
+          // Append new content to the last message
           const index = updatedMessages.length - 1
           updatedMessages[index] =
             updatedMessages[index] + dataChunk.message.content
@@ -31,7 +33,7 @@ const ChatArea: FC = () => {
     })
   }
 
-  // Handle window scroll events
+  // Handle window scroll events for auto-scrolling
   let scrollHeight = 0
   const responseSectionHeight = 630
   if (responseSectionRef.current)
@@ -40,6 +42,7 @@ const ChatArea: FC = () => {
     let scrollTop = 0
     if (responseSectionRef.current)
       scrollTop = responseSectionRef.current.scrollTop
+    // Auto-scroll to the bottom if near the end of the scrollable area
     if (
       bottomRef.current &&
       scrollHeight > responseSectionHeight &&

@@ -34,14 +34,17 @@ export function PropsProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// Custom hook to access the current application props from context
 export function useProps() {
   return useContext(PropsContext)
 }
 
+// Custom hook to access the dispatch function for actions from context
 export function usePropsDispatch() {
   return useContext(PropsDispatchContext)
 }
 
+// Reducer function to handle state updates based on dispatched actions
 function propsReducer(props: AppProps, action: PropsAction): AppProps {
   switch (action.type) {
     case 'SET_INSTRUCTIONS':
@@ -50,7 +53,7 @@ function propsReducer(props: AppProps, action: PropsAction): AppProps {
         customInstructions: action.payload
       }
     default:
-      throw Error('Unknown action: ' + action.type)
+      throw Error(`Unknown action: ${action.type}`)
   }
 }
 
