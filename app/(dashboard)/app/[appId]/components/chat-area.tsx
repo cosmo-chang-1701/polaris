@@ -4,6 +4,8 @@ import React, { FC, useEffect, useRef, useState, useTransition } from 'react'
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 
+import { ChatResponseChunk } from '@/app/(dashboard)/types'
+
 import PromptInput from './pompt-input'
 
 const ChatArea: FC = () => {
@@ -12,10 +14,7 @@ const ChatArea: FC = () => {
   const responseSectionRef = useRef<HTMLInputElement>(null)
   const bottomRef = useRef<HTMLInputElement>(null)
 
-  const handleResponseMessage = (dataChunk: {
-    message: { content: string }
-    done: boolean
-  }) => {
+  const handleResponseMessage = (dataChunk: ChatResponseChunk) => {
     startTransition(() => {
       setResponseMessages((prevMessages) => {
         // If the message is complete, add a new entry

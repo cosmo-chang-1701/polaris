@@ -3,6 +3,8 @@
 import React, { FC, useState } from 'react'
 import { useProps } from '../provider'
 
+import { ChatResponseChunk } from '@/app/(dashboard)/types'
+
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -15,10 +17,7 @@ import type { ToastProps } from '@/components/ui/toast'
 import { cn, postAndStream } from '@/lib/utils'
 
 interface OnResponseProps {
-  onResponse: (dataChunk: {
-    message: { content: string }
-    done: boolean
-  }) => void
+  onResponse: (dataChunk: ChatResponseChunk) => void
 }
 
 const PromptInput: FC<OnResponseProps> = ({ onResponse }) => {

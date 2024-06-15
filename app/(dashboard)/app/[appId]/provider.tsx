@@ -6,18 +6,7 @@ import {
   ReactNode
 } from 'react'
 
-export enum AppActionKind {
-  SET_INSTRUCTIONS = 'SET_INSTRUCTIONS'
-}
-
-interface PropsAction {
-  type: AppActionKind
-  payload: string
-}
-
-type AppProps = {
-  customInstructions: string
-}
+import type { PropsAction, AppProps } from '@/app/(dashboard)/types'
 
 const PropsContext = createContext<AppProps | null>(null)
 const PropsDispatchContext = createContext<Dispatch<PropsAction> | null>(null)

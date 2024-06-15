@@ -31,12 +31,8 @@ import { useTranslation } from '@/app/i18n/client'
 import { authenticate, createUser } from '@/actions/auth'
 import { useFormAction } from '@/hooks/useFormActions'
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6).max(16)
-})
-
-export type UseFormActionFormSchema = z.infer<typeof formSchema>
+import type { UseFormActionFormSchema } from '@/app/(public)/types'
+import { formSchema } from '../schemas'
 
 const UserAuthForm = ({
   children,
