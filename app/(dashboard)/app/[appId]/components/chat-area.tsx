@@ -4,31 +4,39 @@ import React, { FC, useEffect, useRef, useState, useTransition } from 'react'
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 
-import { ChatResponseChunk } from '@/app/(dashboard)/types'
+import { ChatResponseChunk, ChatResponseMessage } from '@/app/(dashboard)/types'
 
-import PromptInput from './pompt-input'
+import PromptInput from './prompt-input'
 
 const ChatArea: FC = () => {
-  const [responseMessages, setResponseMessages] = useState<string[]>([''])
+  const initialState = { role: 'assistant', content: '' }
+  const [responseMessages, setResponseMessages] = useState<
+    ChatResponseMessage[]
+  >([initialState])
   const [isPending, startTransition] = useTransition()
-  const responseSectionRef = useRef<HTMLInputElement>(null)
-  const bottomRef = useRef<HTMLInputElement>(null)
+  const responseSectionRef = useRef<HTMLDivElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  const updateResponseMessages = (
+    prevMessages: ChatResponseMessage[],
+    dataChunk: ChatResponseChunk
+  ): ChatResponseMessage[] => {
+    const updatedMessages: ChatResponseMessage[] = [...prevMessages]
+    if (dataChunk.done) {
+      updatedMessages.push(initialState)
+    } else {
+      const index = updatedMessages.length - 1
+      updatedMessages[index].content =
+        updatedMessages[index].content + dataChunk.message.content
+    }
+    return updatedMessages
+  }
 
   const handleResponseMessage = (dataChunk: ChatResponseChunk) => {
     startTransition(() => {
-      setResponseMessages((prevMessages) => {
-        // If the message is complete, add a new entry
-        const updatedMessages = [...prevMessages]
-        if (dataChunk.done) {
-          updatedMessages.push('')
-        } else {
-          // Append new content to the last message
-          const index = updatedMessages.length - 1
-          updatedMessages[index] =
-            updatedMessages[index] + dataChunk.message.content
-        }
-        return updatedMessages
-      })
+      setResponseMessages((prevMessages) =>
+        updateResponseMessages(prevMessages, dataChunk)
+      )
     })
   }
 
@@ -58,9 +66,12 @@ const ChatArea: FC = () => {
           ref={responseSectionRef}
           className={`h-[${responseSectionHeight}px] overflow-y-auto px-5 py-4`}
         >
-          {responseMessages.map((message, index) => {
-            if (message) return <MessageBlock key={index} message={message} />
-          })}
+          {responseMessages.map(
+            (message, index) =>
+              message.content && (
+                <MessageBlock key={index} message={message.content} />
+              )
+          )}
           <div ref={bottomRef}></div>
         </div>
       </div>
