@@ -4,39 +4,41 @@ import React, { FC, useEffect, useRef, useState, useTransition } from 'react'
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 
-import { ChatResponseChunk, ChatResponseMessage } from '@/app/(dashboard)/types'
+import { ChatMessageChunk, ChatMessage } from '@/app/(dashboard)/types'
 
 import PromptInput from './prompt-input'
 
 const ChatArea: FC = () => {
   const initialState = { role: 'assistant', content: '' }
-  const [responseMessages, setResponseMessages] = useState<
-    ChatResponseMessage[]
-  >([initialState])
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
   const [isPending, startTransition] = useTransition()
   const responseSectionRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   const updateResponseMessages = (
-    prevMessages: ChatResponseMessage[],
-    dataChunk: ChatResponseChunk
-  ): ChatResponseMessage[] => {
-    const updatedMessages: ChatResponseMessage[] = [...prevMessages]
-    if (dataChunk.done) {
-      updatedMessages.push(initialState)
-    } else {
-      const index = updatedMessages.length - 1
-      updatedMessages[index].content =
-        updatedMessages[index].content + dataChunk.message.content
-    }
+    prevChatMessages: ChatMessage[],
+    dataChunk: ChatMessageChunk
+  ): ChatMessage[] => {
+    const updatedMessages: ChatMessage[] = [...prevChatMessages]
+    const index = updatedMessages.length - 1
+    updatedMessages[index].content =
+      updatedMessages[index].content + dataChunk.message.content
     return updatedMessages
   }
 
-  const handleResponseMessage = (dataChunk: ChatResponseChunk) => {
+  const handleResponseMessage = (dataChunk: ChatMessageChunk) => {
     startTransition(() => {
-      setResponseMessages((prevMessages) =>
-        updateResponseMessages(prevMessages, dataChunk)
+      setChatMessages((prevChatMessages) =>
+        updateResponseMessages(prevChatMessages, dataChunk)
       )
+    })
+  }
+
+  const handleAddPrompt = (prompt: ChatMessage) => {
+    setChatMessages((prevChatMessages) => {
+      let updatedMessages: ChatMessage[] = [...prevChatMessages]
+      updatedMessages = [...prevChatMessages, prompt, initialState]
+      return updatedMessages
     })
   }
 
@@ -66,7 +68,7 @@ const ChatArea: FC = () => {
           ref={responseSectionRef}
           className={`h-[${responseSectionHeight}px] overflow-y-auto px-5 py-4`}
         >
-          {responseMessages.map(
+          {chatMessages.map(
             (message, index) =>
               message.content && (
                 <MessageBlock key={index} message={message.content} />
@@ -76,7 +78,11 @@ const ChatArea: FC = () => {
         </div>
       </div>
       <div className="h-[70px] w-full py-3">
-        <PromptInput onResponse={handleResponseMessage} />
+        <PromptInput
+          onAddPrompt={handleAddPrompt}
+          onResponse={handleResponseMessage}
+          historyMessages={chatMessages}
+        />
       </div>
     </>
   )

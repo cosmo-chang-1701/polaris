@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-import { ChatResponseChunk } from '@/app/(dashboard)/types'
+import { ChatMessageChunk } from '@/app/(dashboard)/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export async function postAndStream(
   url: string,
   data: object,
-  onChunkReceived: (dataChunk: ChatResponseChunk) => void
+  onChunkReceived: (dataChunk: ChatMessageChunk) => void
 ): Promise<void> {
   const response = await fetch(url, {
     body: JSON.stringify(data),

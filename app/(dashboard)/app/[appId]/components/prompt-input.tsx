@@ -1,9 +1,9 @@
 'use client'
 
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useProps } from '../provider'
 
-import { ChatResponseChunk, ChatResponseMessage } from '@/app/(dashboard)/types'
+import { ChatMessageChunk, ChatMessage } from '@/app/(dashboard)/types'
 
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
@@ -17,10 +17,16 @@ import type { ToastProps } from '@/components/ui/toast'
 import { cn, postAndStream } from '@/lib/utils'
 
 interface PromptInputProps {
-  onResponse: (dataChunk: ChatResponseChunk) => void
+  onAddPrompt: (prompt: ChatMessage) => void
+  onResponse: (dataChunk: ChatMessageChunk) => void
+  historyMessages: ChatMessage[]
 }
 
-const PromptInput: FC<PromptInputProps> = ({ onResponse }) => {
+const PromptInput: FC<PromptInputProps> = ({
+  onAddPrompt,
+  onResponse,
+  historyMessages
+}) => {
   const { t } = useTranslation('prompt-input')
   const { t: errorMessageT } = useTranslation('error-message')
 
@@ -29,9 +35,7 @@ const PromptInput: FC<PromptInputProps> = ({ onResponse }) => {
   const [inputPrompt, setInputPrompt] = useState('')
   const { toast } = useToast()
 
-  // Function to handle sending a message
-  async function handleSendMessage() {
-    setInputPrompt('')
+  async function fetchChatMessage() {
     try {
       await postAndStream(
         'http://localhost:11434/api/chat',
@@ -43,10 +47,8 @@ const PromptInput: FC<PromptInputProps> = ({ onResponse }) => {
               role: 'system',
               content: appProps?.customInstructions
             },
-            {
-              role: 'user',
-              content: inputPrompt
-            }
+            ...historyMessages,
+            { role: 'user', content: inputPrompt }
           ]
         },
         (chunk) => {
@@ -63,6 +65,16 @@ const PromptInput: FC<PromptInputProps> = ({ onResponse }) => {
       if (e instanceof Error) toastProps.description = e.message // Use specific error message if available
       toast(toastProps)
     }
+  }
+
+  // Function to handle sending a message
+  async function handleSendMessage() {
+    setInputPrompt('')
+    onAddPrompt({
+      role: 'user',
+      content: inputPrompt
+    })
+    fetchChatMessage()
   }
 
   return (

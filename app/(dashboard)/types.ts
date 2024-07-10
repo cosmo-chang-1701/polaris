@@ -11,12 +11,12 @@ export type AppProps = {
   customInstructions: string
 }
 
-export type ChatResponseMessage = {
+export type ChatMessage = {
   role: string
   content: string
 }
 
-export type ChatResponseChunk = {
-  message: ChatResponseMessage
+export type ChatMessageChunk = {
+  message: ChatMessage
   done: boolean
 }
