@@ -2,11 +2,10 @@
 
 import React, { FC, useEffect, useRef, useState, useTransition } from 'react'
 
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-
 import { ChatMessageChunk, ChatMessage } from '@/app/(dashboard)/types'
 
 import PromptInput from './prompt-input'
+import MessageBlock from './message-block'
 
 const ChatArea: FC = () => {
   const initialState = { role: 'assistant', content: '' }
@@ -70,9 +69,7 @@ const ChatArea: FC = () => {
         >
           {chatMessages.map(
             (message, index) =>
-              message.content && (
-                <MessageBlock key={index} message={message.content} />
-              )
+              message.content && <MessageBlock key={index} message={message} />
           )}
           <div ref={bottomRef}></div>
         </div>
@@ -85,22 +82,6 @@ const ChatArea: FC = () => {
         />
       </div>
     </>
-  )
-}
-
-function MessageBlock({ message }: { message: string }) {
-  return (
-    <div className="mt-4">
-      <div className="flex items-start space-x-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="/ai.jpeg" alt="AI" />
-          <AvatarFallback className="bg-black">AI</AvatarFallback>
-        </Avatar>
-        <div className="w-full rounded-lg bg-gray-200 p-3 text-sm">
-          <p>{message}</p>
-        </div>
-      </div>
-    </div>
   )
 }
 

@@ -8,6 +8,7 @@ export interface PropsAction {
 }
 
 export type AppProps = {
+  userName: string
   customInstructions: string
 }
 

@@ -1,7 +1,7 @@
 'use client'
 
-import React, { FC, useEffect, useState } from 'react'
-import { useProps } from '../provider'
+import React, { FC, useState } from 'react'
+import { useProps } from '@/app/(dashboard)/app/[appId]/provider'
 
 import { ChatMessageChunk, ChatMessage } from '@/app/(dashboard)/types'
 

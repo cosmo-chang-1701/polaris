@@ -3,7 +3,7 @@
 import React, { FC, useState } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 
-import { usePropsDispatch } from '../provider'
+import { usePropsDispatch } from '@/app/(dashboard)/app/[appId]/provider'
 import { AppActionKind } from '@/app/(dashboard)/types'
 
 import { useTranslation } from '@/app/i18n/client'

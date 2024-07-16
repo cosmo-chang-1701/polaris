@@ -11,7 +11,17 @@ import type { PropsAction, AppProps } from '@/app/(dashboard)/types'
 const PropsContext = createContext<AppProps | null>(null)
 const PropsDispatchContext = createContext<Dispatch<PropsAction> | null>(null)
 
-export function PropsProvider({ children }: { children: ReactNode }) {
+export function PropsProvider({
+  children,
+  userName
+}: {
+  children: ReactNode
+  userName: string
+}) {
+  const initialProps = {
+    userName,
+    customInstructions: ''
+  }
   const [props, dispatch] = useReducer(propsReducer, initialProps)
 
   return (
@@ -44,8 +54,4 @@ function propsReducer(props: AppProps, action: PropsAction): AppProps {
     default:
       throw Error(`Unknown action: ${action.type}`)
   }
-}
-
-const initialProps = {
-  customInstructions: ''
 }

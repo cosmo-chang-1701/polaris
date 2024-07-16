@@ -1,24 +1,16 @@
-'use client'
+import { auth } from '@/auth'
 
 import React, { FC } from 'react'
 
-import CustomInstructions from './components/custom-instructions'
-import ChatArea from './components/chat-area'
-import { PropsProvider } from './provider'
+import ChatMain from './components/chat/chat-main'
 
-const Page: FC = () => {
-  return (
-    <PropsProvider>
-      <div className="flex flex-col md:flex-row">
-        <div className="mr-4 w-full sm:w-1/2">
-          <CustomInstructions />
-        </div>
-        <div className="h-[700px] w-full rounded-lg border sm:w-1/2">
-          <ChatArea />
-        </div>
-      </div>
-    </PropsProvider>
-  )
+const Page: FC = async () => {
+  const session = await auth()
+  if (!session || !session.user?.name || !session.user?.email) {
+    return
+  }
+
+  return <ChatMain user={session.user} />
 }
 
 export default React.memo(Page)
