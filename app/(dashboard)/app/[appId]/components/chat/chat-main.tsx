@@ -17,11 +17,11 @@ type ChatMainProps = {
 const ChatMain: FC<ChatMainProps> = ({ user }) => {
   return (
     <PropsProvider userName={user.name ?? ''}>
-      <div className="flex flex-col md:flex-row">
-        <div className="mr-4 w-full sm:w-1/2">
+      <div className="grid grid-rows-2 gap-4 sm:grid-cols-2">
+        <div>
           <CustomInstructions />
         </div>
-        <div className="h-[700px] w-full rounded-lg border sm:w-1/2">
+        <div className="row-span-2 rounded-lg border">
           <ChatArea />
         </div>
       </div>

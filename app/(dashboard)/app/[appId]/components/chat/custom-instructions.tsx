@@ -21,7 +21,7 @@ const CustomInstructions: FC = () => {
 
   return (
     <Textarea
-      className="h-[400px]"
+      className="h-[330px]"
       placeholder={t('customInstructionsPlaceholder')}
       value={customInstructions}
       onChange={(e) => {

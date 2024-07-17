@@ -62,11 +62,8 @@ const ChatArea: FC = () => {
 
   return (
     <>
-      <div className="h-[630px]">
-        <div
-          ref={responseSectionRef}
-          className={`h-[${responseSectionHeight}px] overflow-y-auto px-5 py-4`}
-        >
+      <div className="h-[90%]">
+        <div ref={responseSectionRef} className="overflow-y-auto px-5 py-4">
           {chatMessages.map(
             (message, index) =>
               message.content && <MessageBlock key={index} message={message} />
@@ -74,7 +71,7 @@ const ChatArea: FC = () => {
           <div ref={bottomRef}></div>
         </div>
       </div>
-      <div className="h-[70px] w-full py-3">
+      <div className="h-[10%]">
         <PromptInput
           onAddPrompt={handleAddPrompt}
           onResponse={handleResponseMessage}
