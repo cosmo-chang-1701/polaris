@@ -47,23 +47,16 @@ const ChatArea: FC = () => {
   if (responseSectionRef.current)
     scrollHeight = responseSectionRef.current.scrollHeight
   useEffect(() => {
-    let scrollTop = 0
-    if (responseSectionRef.current)
-      scrollTop = responseSectionRef.current.scrollTop
     // Auto-scroll to the bottom if near the end of the scrollable area
-    if (
-      bottomRef.current &&
-      scrollHeight > responseSectionHeight &&
-      scrollHeight - scrollTop <= responseSectionHeight + 200
-    ) {
+    if (bottomRef.current && scrollHeight > responseSectionHeight - 60) {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }, [scrollHeight])
 
   return (
-    <>
-      <div className="h-[90%]">
-        <div ref={responseSectionRef} className="overflow-y-auto px-5 py-4">
+    <div className="flex h-[630px] flex-col">
+      <div className="flex-1 overflow-y-auto">
+        <div ref={responseSectionRef} className="px-5 py-4">
           {chatMessages.map(
             (message, index) =>
               message.content && <MessageBlock key={index} message={message} />
@@ -71,14 +64,14 @@ const ChatArea: FC = () => {
           <div ref={bottomRef}></div>
         </div>
       </div>
-      <div className="h-[10%]">
+      <div className="mb-4">
         <PromptInput
           onAddPrompt={handleAddPrompt}
           onResponse={handleResponseMessage}
           historyMessages={chatMessages}
         />
       </div>
-    </>
+    </div>
   )
 }
 

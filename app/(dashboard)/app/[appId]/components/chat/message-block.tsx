@@ -29,7 +29,7 @@ const MessageBlock: FC<MessageBlockProps> = React.memo(
               isUser ? 'bg-blue-200' : 'bg-gray-200'
             ])}
           >
-            <p>{message.content}</p>
+            <p className="break-words">{message.content}</p>
           </div>
           {isUser && <AvatarBlock isUser={isUser} />}
         </div>
