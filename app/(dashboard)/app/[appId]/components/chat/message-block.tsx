@@ -25,11 +25,11 @@ const MessageBlock: FC<MessageBlockProps> = React.memo(
           {!isUser && <AvatarBlock isUser={isUser} />}
           <div
             className={cn([
-              'max-w-xs rounded-lg p-3 text-sm',
+              'max-w-xs whitespace-pre-line break-words rounded-lg p-3 text-sm',
               isUser ? 'bg-blue-200' : 'bg-gray-200'
             ])}
           >
-            <p className="break-words">{message.content}</p>
+            <div>{message.content}</div>
           </div>
           {isUser && <AvatarBlock isUser={isUser} />}
         </div>

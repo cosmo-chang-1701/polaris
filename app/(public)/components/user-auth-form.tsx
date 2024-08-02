@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from '@/lib/zod-i18n'
 
 import React from 'react'
 import { useFormStatus } from 'react-dom'

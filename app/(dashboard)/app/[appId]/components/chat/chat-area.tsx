@@ -49,7 +49,9 @@ const ChatArea: FC = () => {
   useEffect(() => {
     // Auto-scroll to the bottom if near the end of the scrollable area
     if (bottomRef.current && scrollHeight > responseSectionHeight - 60) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+      bottomRef.current.scrollIntoView({
+        behavior: 'smooth'
+      })
     }
   }, [scrollHeight])
 
@@ -64,7 +66,7 @@ const ChatArea: FC = () => {
           <div ref={bottomRef}></div>
         </div>
       </div>
-      <div className="mb-4">
+      <div className="mb-4 px-5">
         <PromptInput
           onAddPrompt={handleAddPrompt}
           onResponse={handleResponseMessage}
